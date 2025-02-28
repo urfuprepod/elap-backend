@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -68,5 +69,11 @@ export class UserController {
   @Post(':id/activate')
   activateUser(@Param('id') userId: string) {
     return this.userService.changeActivation(userId, true);
+  }
+
+  @HttpCode(200)
+  @Delete(':id')
+  deleteUser(@Param('id') userId: string) {
+    return this.userService.deleteById(userId);
   }
 }

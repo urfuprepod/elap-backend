@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { RolesModule } from './roles/roles.module';
 import { ResetPasswordRequestsModule } from './reset-password-requests/reset-password-requests.module';
+import { VideosModule } from './videos/videos.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ResetPasswordRequestsModule } from './reset-password-requests/reset-pas
     UserModule,
     RolesModule,
     ResetPasswordRequestsModule,
+    VideosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
