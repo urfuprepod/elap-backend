@@ -1,0 +1,16 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    container_name: elap
+    ports:
+     - "5435:5432"
+    volumes:
+     - ./docker-data/db-data:/var/lib/postgresql/data 
+    environment:
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=admin1
+    - POSTGRES_DB=elap
+    - POSTGRES_HOST=localhost
+    command: postgres
+    restart: always

@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Video {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title              String @unique
+  videoUrl           String @map("video_url")
+  videoDuration      String @map("video_duration")
+  videoPreviewImgUrl String @map("video_preview_img_url")
+
+  @@map("videos")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  email      String  @unique
+  firstName  String  @map("first_name")
+  groupName  String? @map("group_name")
+  lastName   String  @map("last_name")
+  patronymic String?
+  isActive   Boolean @default(false) @map("is_active")
+  mentorRole String? @map("mentor_role")
+  mentorId   Int?    @map("mentor_id")
+  mentor     User?   @relation("MentorStudent", fields: [mentorId], references: [id])
+  students   User[]  @relation("MentorStudent")
+  password   String
+  tasks      Task[]
+
+  role   Role @relation(fields: [roleId], references: [id])
+  roleId Int  @map("role_id")
+
+  messageMentor  Message[] @relation("MentorMessages")
+  messageStudent Message[] @relation("StudentMessages")
+
+  passwordRequest ResetPasswordRequest?
+
+  @@map("users")
+}
+
+model FAQ {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  question String
+  answer   String @db.Text
+
+  @@map("faq")
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  type          String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int       @map("user_id")
+  files         String[]
+  status        String
+  comments      Comment[]
+  responseText  String    @map("response_text")
+  responseFiles String[]  @map("response_files")
+
+  @@map("tasks")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    Int?     @map("task_id")
+
+  maintainerUserType String @map("maintainer_user_type")
+  message            String @db.Text
+
+  @@map("comments")
+}
+
+model Section {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  subsections Subsection[]
+  text        String
+
+  subsectionContent SubsectionContent[]
+
+  @@map("sections")
+}
+
+model Subsection {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  text      String
+  Section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId Int?     @map("section_id")
+
+  @@map("subsections")
+}
+
+model Advertisement {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title String
+  text  String   @db.Text
+  files String[]
+
+  @@map("advertisements")
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  mentorId      Int?     @map("mentor_id")
+  studentId     Int      @map("student_id")
+  mentor        User?    @relation("MentorMessages", fields: [mentorId], references: [id])
+  student       User     @relation("StudentMessages", fields: [studentId], references: [id], onDelete: Cascade)
+  theme         String
+  question      String   @db.Text
+  response      String
+  questionFiles String[] @map("question_files")
+  responseFiles String[] @map("response_files")
+  status        String
+
+  @@map("messages")
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  title String
+  user  User[]
+
+  @@map("roles")
+}
+
+model SubsectionContent {
+  id        Int      @id @default(autoincrement())
+  data      Json
+  sectionId Int      @map("section_id")
+  section   Section? @relation(fields: [sectionId], references: [id])
+
+  @@map("subsections_content")
+}
+
+model ResetPasswordRequest {
+  id Int @id @default(autoincrement())
+
+  isActive Boolean @default(true) @map("is_active")
+  userId   Int     @unique @map("user_id")
+  user     User    @relation(fields: [userId], references: [id])
+
+  @@map("reset_password_request")
+}
