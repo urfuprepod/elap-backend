@@ -1,11 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
+
+<style type="text/css">
+  html {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .message-block {
+    padding: 40px;
+    background-color: #d5f7d4;
+    max-width: 1000px;
+    margin-inline: auto;
+    border-radius: 8px;
+    margin-bottom: 5px;
+  }
+
+  a {
+    padding: 2px 5px;
+    text-decoration: none;
+    background-color: #d8b2ed;
+    color: #000;
+    border-radius: 4px;
+  }
+
+  .login,
+  .pass {
+    padding: 2px 5px;
+    background-color: #d8b2ed;
+    color: #000;
+    border-radius: 4px;
+  }
+
+  .signature {
+    font-style: italic;
+    text-align: right;
+  }
+
+  .footer-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: #f9f9f9;
+    max-width: 1000px;
+    margin-inline: auto;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+  }
+</style>
+
 <body>
-  <h1>Hello {{email}}!</h1>
-  <p>Welcome to our application. We are glad to have you on board.</p>
-  <h5>Твой пароль: {{password}}</h5>
+<div class="message-block">
+  <h3>Дорогой студент,</h3>
+  <p>Спасибо за регистрацию на сайте <a href="https://elap.site/" target="_blank">ЭЛАП</a>!</p>
+  <br />
+  <p>Ваш логин: <span class="login">${{email}}</span></p>
+  <p>Ваш пароль: <span class="login">${{password}}</span></p>
+  <br />
+  <p>Обратите внимание, что Ваша учетная запись проходит модерацию администратора. Это может занять до 5 рабочих дней. Пожалуйста, дождитесь ответа администратора.</p>
+  <br />
+  <p class="signature">С уважением,</p>
+  <p class="signature">команда проекта «ЭЛАП»</p>
+</div>
+
+<div class="footer-block">
+  <img src="https://elap.site/static/media/logo.a9f5ceef4fc663648b7101f69ce29985.svg" height=70 width=120 />
+  <span>© 2024</span>
+  <img src=https://elap.site/static/media/logo_urfu.4e02dd664ea76e544d51eb5144881cd8.svg height=70 width=120 />
+</div>
 </body>
 </html>

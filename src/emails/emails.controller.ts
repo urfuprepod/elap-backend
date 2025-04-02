@@ -9,7 +9,7 @@ export class EmailsController {
   @Get()
   async profile() {
     console.log(join(process.cwd(), 'src/templates'));
-    // return null;
+    // return null
     return this.emailsService.sendWelcomeEmail(
       'Mark.Zaharenko@ya.ru',
       'пароль',
