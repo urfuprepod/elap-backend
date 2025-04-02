@@ -20,7 +20,7 @@ export class UserController {
   @HttpCode(200)
   @Get()
   getUsers() {
-    return ['шапка 228']
+    // return ['шапка 228']
     return this.userService.findAllUsers();
   }
 
