@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
-<style type="text/css">
+{{!-- <style type="text/css">
   html {
     font-family: "Montserrat", sans-serif;
   }
@@ -53,15 +53,15 @@
     border-radius: 8px;
     border: 1px solid #f0f0f0;
   }
-</style>
+</style> --}}
 
 <body>
 <div class="message-block">
   <h3>Дорогой студент,</h3>
   <p>Спасибо за регистрацию на сайте <a href="https://elap.site/" target="_blank">ЭЛАП</a>!</p>
   <br />
-  <p>Ваш логин: <span class="login">${{email}}</span></p>
-  <p>Ваш пароль: <span class="login">${{password}}</span></p>
+  <p>Ваш логин: <span class="login">{{email}}</span></p>
+  <p>Ваш пароль: <span class="login">{{password}}</span></p>
   <br />
   <p>Обратите внимание, что Ваша учетная запись проходит модерацию администратора. Это может занять до 5 рабочих дней. Пожалуйста, дождитесь ответа администратора.</p>
   <br />
