@@ -11,7 +11,7 @@ export class EmailsController {
     console.log(join(process.cwd(), 'src/templates'));
     // return null
     return this.emailsService.sendWelcomeEmail(
-      'i.v.zakharov@urfu.ru',
+      'Mark.Zaharenko228@gmail.com',
       'пароль',
     );
   }
