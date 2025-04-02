@@ -13,13 +13,14 @@ import { UserService } from './user.service';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('user')
+@Controller('users2')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @HttpCode(200)
   @Get()
   getUsers() {
+    return ['шапка 228']
     return this.userService.findAllUsers();
   }
 
