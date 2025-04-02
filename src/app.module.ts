@@ -16,30 +16,30 @@ import { VideosModule } from './videos/videos.module';
 @Module({
   imports: [
     // ConfigModule.forRoot(),
-    // MailerModule.forRoot({
-    //   transport: {
-    //     host: '78.24.220.85', // Хост SMTP сервера
-    //     port: 25, // Порт SMTP сервера
-    //     secure: false, // Используем SSL/TLS
-    //     tls: {
-    //       rejectUnauthorized: false, // Игнорируем ошибку самоподписанного сертификата
-    //     },
-    //     auth: {
-    //       user: 'no-reply@elap.site', // Ваш email
-    //       pass: 'ElapNoRelyPass321!!', // Пароль от почты или App Password
-    //     },
-    //   },
-    //   defaults: {
-    //     from: 'no-reply@elap.site', // Отправитель по умолчанию
-    //   },
-    //   template: {
-    //     dir: join(process.cwd(), 'src/templates'), // Путь к папке с шаблонами
-    //     adapter: new HandlebarsAdapter(), // Используем Handlebars для шаблонов
-    //     options: {
-    //       strict: true,
-    //     },
-    //   },
-    // }),
+    MailerModule.forRoot({
+      transport: {
+        host: '78.24.220.85', // Хост SMTP сервера
+        port: 25, // Порт SMTP сервера
+        secure: false, // Используем SSL/TLS
+        tls: {
+          rejectUnauthorized: false, // Игнорируем ошибку самоподписанного сертификата
+        },
+        auth: {
+          user: 'no-reply@elap.site', // Ваш email
+          pass: 'ElapNoRelyPass321!!', // Пароль от почты или App Password
+        },
+      },
+      defaults: {
+        from: 'no-reply@elap.site', // Отправитель по умолчанию
+      },
+      template: {
+        dir: join(process.cwd(), 'src/templates'), // Путь к папке с шаблонами
+        adapter: new HandlebarsAdapter(), // Используем Handlebars для шаблонов
+        options: {
+          strict: true,
+        },
+      },
+    }),
     AuthModule,
     // EmailsModule,
     UserModule,
