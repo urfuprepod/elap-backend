@@ -41,7 +41,7 @@ import { VideosModule } from './videos/videos.module';
       },
     }),
     AuthModule,
-    // EmailsModule,
+    EmailsModule,
     UserModule,
     RolesModule,
     // ResetPasswordRequestsModule,
