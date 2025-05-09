@@ -4,6 +4,7 @@
 /build
 /docker-data
 docker-data
+/static
 
 # Logs
 logs

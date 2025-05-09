@@ -11,7 +11,9 @@ import {
   export class IsUrfuEmailConstraint implements ValidatorConstraintInterface {
     validate(value: string, args: ValidationArguments) {
       // Проверяем, что строка содержит только буквы
-      return /^urfu\.(ru|me)$/.test(value.split('@').at(-1))
+      const splitted = value.split('@').at(-1)
+      if (!splitted) return false
+      return /^urfu\.(ru|me)$/.test(splitted)
     }
   
     defaultMessage(args: ValidationArguments) {

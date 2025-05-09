@@ -84,12 +84,12 @@ model Comment {
 }
 
 model Section {
-  id                Int                 @id @default(autoincrement())
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-  text              String
-  subsections       Subsection[]
-  subsectionContent SubsectionContent[]
+  id                  Int                 @id @default(autoincrement())
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+  text                String
+  subsections         Subsection[]
+  subsections_content SubsectionContent[]
 
   @@map("sections")
 }
@@ -100,7 +100,7 @@ model Subsection {
   updatedAt DateTime @updatedAt @map("updated_at")
   text      String
   sectionId Int?     @map("section_id")
-  Section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   @@map("subsections")
 }
@@ -143,10 +143,10 @@ model Role {
 }
 
 model SubsectionContent {
-  id        Int     @id @default(autoincrement())
-  data      Json
-  sectionId Int     @map("section_id")
-  section   Section @relation(fields: [sectionId], references: [id])
+  id         Int     @id @default(autoincrement())
+  data       Json
+  section_id Int
+  sections   Section @relation(fields: [section_id], references: [id])
 
   @@map("subsections_content")
 }

@@ -31,4 +31,13 @@ export class VideosService {
       },
     });
   }
+
+  async editVideo(id: string, dto: Partial<CreateVideoDto>) {
+    await this.prismaService.video.update({
+      where: { id: +id },
+      data: {
+        ...dto,
+      },
+    });
+  }
 }

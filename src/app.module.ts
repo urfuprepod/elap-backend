@@ -14,6 +14,7 @@ import { ResetPasswordRequestsModule } from './reset-password-requests/reset-pas
 import { VideosModule } from './videos/videos.module';
 import { FaqModule } from './faq/faq.module';
 import { AdvertismentModule } from './advertisment/advertisment.module';
+import { LearnModule } from './learn/learn.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { AdvertismentModule } from './advertisment/advertisment.module';
     VideosModule,
     FaqModule,
     AdvertismentModule,
+    LearnModule,
   ],
   controllers: [AppController],
   providers: [AppService],
