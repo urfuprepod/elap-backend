@@ -23,6 +23,6 @@ export class ResetPasswordRequestsController {
 
   @Get('resetPassRequest/:id/validate')
   validateResetPassRequest(@Param('id') id: string) {
-    return this.validateResetPassRequest(id);
+    return this.resetPasswordRequestsService.validatePasswordRequest(id);
   }
 }
