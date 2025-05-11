@@ -55,10 +55,10 @@ export class AuthService {
     const result = await this.jwt.verifyAsync<{ id: string }>(token);
     if (!result) throw new UnauthorizedException('Invalid token');
 
-    const { password, ...user } = await this.userServiсe.getById(result.id);
-    const tokens = this.issueTokens(user.id);
+    // const { password, ...user } = await this.userServiсe.getById(result.id);
+    // const tokens = this.issueTokens(user.id);
 
-    return { user, ...tokens };
+    // return { user, ...tokens };
   }
 
   private issueTokens(userId: number) {

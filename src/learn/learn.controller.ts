@@ -12,6 +12,7 @@ import {
 import { LearnService } from './learn.service';
 import { CreateSectiontDto } from './dto/create-section.dto';
 import { CreateSubsectiontDto } from './dto/create-subsection.dto';
+import { ISubsectionData } from './dto/create-subsection-content.dto';
 
 @Controller('learn')
 export class LearnController {
@@ -70,5 +71,50 @@ export class LearnController {
   @Delete(':sectionId/:id')
   deleteSubsection(@Param('id') id: string, @Param('sectionId') sectionId) {
     return this.learnService.deleteSubsection(sectionId, id);
+  }
+
+  @Get(':sectionId/:subsectionId')
+  getSubsectionContent(
+    @Param('sectionId') sectionId: string,
+    @Param('subsectionId') subsection: string,
+  ) {
+    return this.learnService.getAllSubsectionContent(sectionId, subsection);
+  }
+
+  @Post(':sectionId/:subsectionId')
+  createSubsectionContent(
+    @Param('sectionId') sectionId: string,
+    @Body() dto: ISubsectionData[],
+    @Param('subsectionId') subsectionId: string,
+  ) {
+    return this.learnService.createSubsectionContent(subsectionId, dto);
+  }
+
+  @Delete(':sectionId/:subsectionId/:id')
+  deleteSubsectionContent(
+    @Param('id') id: string,
+    @Param('sectionId') sectionId: string,
+    @Param('subsectionId') subsectionId: string,
+  ) {
+    return this.learnService.deleteSubsectionContent(
+      id,
+      sectionId,
+      subsectionId,
+    );
+  }
+
+  @Put(':sectionId/:subsectionId/:id')
+  editSubsectionContent(
+    @Param('id') id: string,
+    @Param('sectionId') sectionId: string,
+    @Param('subsectionId') subsectionId: string,
+    @Body() dto: ISubsectionData,
+  ) {
+    return this.learnService.editSubsectionContent(
+      sectionId,
+      subsectionId,
+      id,
+      dto,
+    );
   }
 }

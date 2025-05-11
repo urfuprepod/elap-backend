@@ -7,6 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum SubsectionContentStatus {
+  text
+  audio
+  video
+  image
+}
+
 model Video {
   id                 Int      @id @default(autoincrement())
   createdAt          DateTime @default(now()) @map("created_at")
@@ -89,7 +96,7 @@ model Section {
   updatedAt           DateTime            @updatedAt @map("updated_at")
   text                String
   subsections         Subsection[]
-  subsections_content SubsectionContent[]
+  
 
   @@map("sections")
 }
@@ -101,8 +108,19 @@ model Subsection {
   text      String
   sectionId Int?     @map("section_id")
   section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  subsections_content SubsectionContent[]
 
   @@map("subsections")
+}
+
+model SubsectionContent {
+  id         Int     @id @default(autoincrement())
+  data       Json
+  subsection_id Int
+  subsection   Subsection @relation(fields: [subsection_id], references: [id])
+  type SubsectionContentStatus
+
+  @@map("subsections_content")
 }
 
 model Advertisement {
@@ -140,15 +158,6 @@ model Role {
   user  User[]
 
   @@map("roles")
-}
-
-model SubsectionContent {
-  id         Int     @id @default(autoincrement())
-  data       Json
-  section_id Int
-  sections   Section @relation(fields: [section_id], references: [id])
-
-  @@map("subsections_content")
 }
 
 model ResetPasswordRequest {

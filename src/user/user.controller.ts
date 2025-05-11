@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -36,7 +36,6 @@ export class UserController {
     return this.userService.findAllStudents();
   }
 
-  @HttpCode(200)
   @Get('mentors')
   getMentors() {
     return this.userService.findAllMentors();

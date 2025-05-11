@@ -14,14 +14,14 @@ export class UserService {
     private rolesService: RolesService,
   ) {}
 
-  async getById(id: number | string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
+  async getById(id: string) {
+    // const user = await this.prisma.user.findUnique({
+    //   where: {
+    //     id: +id,
+    //   },
+    // });
 
-    return user;
+    // return user;
   }
   async getByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
@@ -96,9 +96,11 @@ export class UserService {
   }
 
   async findAllMentors() {
+    console.log('работаем наж этим')
     const users = await this.prisma.user.findMany({
       where: { role: { title: 'MENTOR' } },
     });
+    console.log(users, 'педики')
     return users;
   }
 
@@ -136,10 +138,11 @@ export class UserService {
 
   async changeActivation(userId: string, isActive: boolean) {
     const user = await this.getById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    throw new NotFoundException('User not found');
+    // if (!user) throw new NotFoundException('User not found');
 
     await this.prisma.user.update({
-      where: { id: Number(userId) },
+      where: { id: +userId },
       data: { isActive },
     });
   }

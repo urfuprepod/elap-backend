@@ -15,6 +15,7 @@ import { VideosModule } from './videos/videos.module';
 import { FaqModule } from './faq/faq.module';
 import { AdvertismentModule } from './advertisment/advertisment.module';
 import { LearnModule } from './learn/learn.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { LearnModule } from './learn/learn.module';
     FaqModule,
     AdvertismentModule,
     LearnModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
