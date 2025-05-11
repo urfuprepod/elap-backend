@@ -20,7 +20,6 @@ export class UserService {
     //     id: +id,
     //   },
     // });
-
     // return user;
   }
   async getByEmail(email: string): Promise<User | null> {
@@ -40,9 +39,8 @@ export class UserService {
       data: {
         email: dto.email,
         password,
-        lastName: dto.lastName,
-        firstName: dto.firstName,
-        patronymic: dto.patronymic,
+        login: dto.login,
+
         role: {
           connect: {
             id: roleModel.id,
@@ -51,16 +49,20 @@ export class UserService {
       },
     });
 
+    console.log(role, 'оауоауоау')
     if (!role) {
-      const mentor = await this.prisma.user.findFirst({
-        where: { role: { title: 'MENTOR' } },
-      });
-
-      if (!mentor) return;
-      this.prisma.user.update({
-        where: { id: user.id },
-        data: { mentorId: mentor.id },
-      });
+      const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
+      console.log(mentorRole, 'cherensha')
+      if (!!mentorRole) {
+        const mentor = await this.prisma.user.findFirst({
+          where: { role: { id: mentorRole.id } },
+        });
+        if (!mentor) return;
+        this.prisma.user.update({
+          where: { id: user.id },
+          data: { mentorId: mentor.id },
+        });
+      }
     }
 
     return user;
@@ -96,11 +98,11 @@ export class UserService {
   }
 
   async findAllMentors() {
-    console.log('работаем наж этим')
+    console.log('работаем наж этим');
     const users = await this.prisma.user.findMany({
       where: { role: { title: 'MENTOR' } },
     });
-    console.log(users, 'педики')
+    console.log(users, 'педики');
     return users;
   }
 

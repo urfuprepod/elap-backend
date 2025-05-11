@@ -31,10 +31,7 @@ model User {
   createdAt       DateTime              @default(now()) @map("created_at")
   updatedAt       DateTime              @updatedAt @map("updated_at")
   email           String                @unique
-  firstName       String                @map("first_name")
-  groupName       String?               @map("group_name")
-  lastName        String                @map("last_name")
-  patronymic      String?
+  login           String
   isActive        Boolean               @default(false) @map("is_active")
   mentorRole      String?               @map("mentor_role")
   mentorId        Int?                  @map("mentor_id")
@@ -44,7 +41,8 @@ model User {
   messageMentor   Message[]             @relation("MentorMessages")
   messageStudent  Message[]             @relation("StudentMessages")
   passwordRequest ResetPasswordRequest?
-  tasks           Task[]
+  tasks           Task[]                @relation("TaskStudent")
+  mentoredTasks   Task[]                @relation("TaskMentor")
   mentor          User?                 @relation("MentorStudent", fields: [mentorId], references: [id])
   students        User[]                @relation("MentorStudent")
   role            Role                  @relation(fields: [roleId], references: [id])
@@ -70,10 +68,13 @@ model Task {
   userId        Int       @map("user_id")
   files         String[]
   status        String
-  responseText  String    @map("response_text")
+  responseText  String?   @map("response_text")
   responseFiles String[]  @map("response_files")
   comments      Comment[]
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User      @relation("TaskStudent", fields: [userId], references: [id], onDelete: Cascade)
+  mentorId      Int       @map("mentor_id")
+  mentor        User?     @relation("TaskMentor", fields: [mentorId], references: [id], onDelete: Cascade)
+  text          String
 
   @@map("tasks")
 }
@@ -86,39 +87,39 @@ model Comment {
   maintainerUserType String   @map("maintainer_user_type")
   message            String
   Task               Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  files              String[]
 
   @@map("comments")
 }
 
 model Section {
-  id                  Int                 @id @default(autoincrement())
-  createdAt           DateTime            @default(now()) @map("created_at")
-  updatedAt           DateTime            @updatedAt @map("updated_at")
-  text                String
-  subsections         Subsection[]
-  
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  text        String
+  subsections Subsection[]
 
   @@map("sections")
 }
 
 model Subsection {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  text      String
-  sectionId Int?     @map("section_id")
-  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  id                  Int                 @id @default(autoincrement())
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+  text                String
+  sectionId           Int?                @map("section_id")
+  section             Section?            @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   subsections_content SubsectionContent[]
 
   @@map("subsections")
 }
 
 model SubsectionContent {
-  id         Int     @id @default(autoincrement())
-  data       Json
+  id            Int                     @id @default(autoincrement())
+  data          Json
   subsection_id Int
-  subsection   Subsection @relation(fields: [subsection_id], references: [id])
-  type SubsectionContentStatus
+  subsection    Subsection              @relation(fields: [subsection_id], references: [id])
+  type          SubsectionContentStatus
 
   @@map("subsections_content")
 }

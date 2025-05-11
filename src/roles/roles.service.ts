@@ -25,4 +25,12 @@ export class RolesService {
     }
     return role;
   }
+
+  async getRoleById(id: number) {
+    const role = await this.prismaService.role.findFirst({
+      where: {id}
+    })
+
+    return role;
+  }
 }

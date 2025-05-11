@@ -9,6 +9,7 @@ import { verify } from 'argon2';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,7 @@ export class AuthService {
     };
   }
 
-  async login(dto: AuthDto) {
+  async login(dto: LoginDto) {
     const { password, ...user } = await this.validateUser(dto);
     const tokens = this.issueTokens(user.id);
     return {
@@ -41,7 +42,7 @@ export class AuthService {
     };
   }
 
-  private async validateUser(dto: AuthDto) {
+  private async validateUser(dto: LoginDto) {
     const user = await this.userServiсe.getByEmail(dto.email);
 
     if (!user) throw new NotFoundException('User not found');

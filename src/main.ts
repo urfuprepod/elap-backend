@@ -9,7 +9,8 @@ async function bootstrap() {
   app.enableCors({
     origin: true, // Укажите ваш фронтенд-адрес
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Authorization'], // Для доступа браузера к заголовку
     credentials: true, // Для передачи кук и заголовков авторизации
   });
 
@@ -17,7 +18,7 @@ async function bootstrap() {
     response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     response.setHeader(
       'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE',
+      'GET, POST, PUT, DELETE, OPTIONS',
     );
     response.setHeader(
       'Access-Control-Allow-Headers',

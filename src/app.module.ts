@@ -16,6 +16,9 @@ import { FaqModule } from './faq/faq.module';
 import { AdvertismentModule } from './advertisment/advertisment.module';
 import { LearnModule } from './learn/learn.module';
 import { UsersModule } from './users/users.module';
+import { TasksModule } from './tasks/tasks.module';
+import { CommentModule } from './comment/comment.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -54,6 +57,8 @@ import { UsersModule } from './users/users.module';
     AdvertismentModule,
     LearnModule,
     UsersModule,
+    TasksModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
