@@ -19,6 +19,7 @@ import { UsersModule } from './users/users.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CommentModule } from './comment/comment.module';
 import { PassportModule } from '@nestjs/passport';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { PassportModule } from '@nestjs/passport';
     UsersModule,
     TasksModule,
     CommentModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

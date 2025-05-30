@@ -21,31 +21,41 @@ export class AuthService {
   EXPIRE_DAY_REFRESH_TOKEN = 3; // время жизни токена в днях
   REFRESH_TOKEN_NAME = 'urfuToken';
 
-  async register(dto: AuthDto) {
+  async register(dto: AuthDto, res: Response) {
     const oldUser = await this.userServiсe.getByEmail(dto.email);
     if (oldUser) throw new BadRequestException('Email already in use');
     const { password, ...user } = await this.userServiсe.create(dto);
 
-    const tokens = this.issueTokens(user.id);
+    const tokens = await this.issueTokens(user.id, res);
     return {
       user,
       ...tokens,
     };
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto, res: Response) {
     const { password, ...user } = await this.validateUser(dto);
-    const tokens = this.issueTokens(user.id);
+    const tokens = await this.issueTokens(user.id, res);
     return {
       user,
       ...tokens,
     };
+  }
+
+  async logout( res: Response) {
+    res.cookie('urfuToken', '', {
+      httpOnly: true,
+      domain: 'localhost',
+      secure: true,
+      expires: new Date(0),
+      sameSite: 'none',
+    });
   }
 
   private async validateUser(dto: LoginDto) {
     const user = await this.userServiсe.getByEmail(dto.email);
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException('Не нашел пользователя');
     const isValid = await verify(user.password, dto.password);
     if (!isValid) throw new NotFoundException('Invalid credentials');
 
@@ -62,10 +72,22 @@ export class AuthService {
     // return { user, ...tokens };
   }
 
-  private issueTokens(userId: number) {
+  private async issueTokens(userId: number, res: Response) {
     const data = { id: userId };
-    const accessToken = this.jwt.sign(data, {
-      expiresIn: '3d',
+    const accessToken = await this.jwt.signAsync(
+      { ...data, tokenName: 'urfuToken' },
+      {
+        expiresIn: '3d',
+      },
+    );
+    const date = new Date();
+    date.setDate(date.getDate() + 3);
+    res.cookie('urfuToken', accessToken, {
+      httpOnly: true,
+      domain: 'localhost',
+      secure: true,
+      expires: date,
+      sameSite: 'none',
     });
 
     return { accessToken };
