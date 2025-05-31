@@ -61,4 +61,10 @@ export class UsersController {
   createStudent(@Body() dto: AuthDto) {
     return this.usersService.create(dto);
   }
+
+  @HttpCode(200)
+  @Get(':id')
+  getStudentById(@Param('id') userId: string) {
+    return this.usersService.getById(userId)
+  }
 }

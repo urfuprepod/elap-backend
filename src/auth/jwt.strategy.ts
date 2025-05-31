@@ -23,8 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   private static extractJWTFromCookie(req: Request): string | null {
     const cookieName = 'urfuToken';
-
-    console.log('чмо', req)
     if (
       req.cookies &&
       cookieName in req.cookies &&

@@ -17,8 +17,9 @@ export class TasksService {
   ) {}
 
   async getAllTasks(userId?: number) {
-    console.log(String(userId) ?? '10000')
-    const user = await this.usersService.getById(userId ? String(userId) : '10000');
+    const user = await this.usersService.getById(
+      userId ? String(userId) : '10000',
+    );
     const role = user
       ? await this.roleService.getRoleById(user.roleId)
       : await this.roleService.getRoleByTitle('USER');
@@ -29,22 +30,37 @@ export class TasksService {
           ? { mentorId: user.id }
           : { userId: user.id }
         : undefined,
+      include: {
+        user: true,
+        mentor: { select: { login: true } },
+        comments: true,
+      },
     });
 
-    return tasks;
+    const transformedTasks = tasks.map((post) => ({
+      ...post,
+      taskFiles: post.files,
+      files: undefined,
+      student: post.user, // Новое имя поля
+      user: undefined, // Удаляем старое поле
+    }));
+
+    return transformedTasks;
   }
 
-  async createTask(dto: CreateTaskDto, userId: string, files: any[]) {
-    await this.prismaService.task.create({
+  async createTask(dto: CreateTaskDto, userId: number, files: any[]) {
+    const task = await this.prismaService.task.create({
       data: {
-        type: dto.type,
-        userId: dto.studentId,
+        type: 'Default',
+        userId: +dto.studentId,
         text: dto.text,
         status: 'created',
-        mentorId: +userId,
+        mentorId: userId,
         files: files.map((el: any) => el.filename),
       },
     });
+
+    return task;
   }
 
   async deleteTask(id: string) {
@@ -64,8 +80,9 @@ export class TasksService {
     const edited = await this.prismaService.task.update({
       where: { id: task.id },
       data: {
-        responseText: dto.reponseText,
+        responseText: dto.responseText,
         files: fileNames,
+        status: 'review',
       },
     });
 
@@ -78,13 +95,16 @@ export class TasksService {
     });
     if (!current) throw new NotFoundException('Bad Request');
     const filenames = (files ?? []).map((el: any) => el.filename);
-    await this.prismaService.task.update({
+    const { studentId, ...rest } = dto;
+    const task = await this.prismaService.task.update({
       where: { id: current.id },
       data: {
-        ...dto,
+        ...rest,
+        userId: +studentId,
         files: filenames,
       },
     });
+    return task;
   }
 
   async setTaskStatusRework(taksId: string, dto: ReworkStatusDto, files?: any) {

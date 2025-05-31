@@ -31,7 +31,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
-  @Get('/logout')
+  @Get('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res)
   }

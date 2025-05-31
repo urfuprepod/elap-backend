@@ -4,6 +4,6 @@ export class CreateResponseDto {
   @IsString()
   repsponse: string;
 
-  @IsArray()
-  responseFiles?: string[];
+  @IsString()
+  messageId: string
 }

@@ -8,13 +8,13 @@ import {
 } from 'class-validator';
 
 export class CreateTaskDto {
-  @IsInt()
-  @IsNotEmpty()
-  studentId: number;
-
   @IsString()
   @IsNotEmpty()
-  type: string;
+  studentId: string;
+
+  // @IsString()
+  // @IsNotEmpty()
+  // type: string;
 
   @IsString()
   @IsNotEmpty()

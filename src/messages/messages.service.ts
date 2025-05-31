@@ -11,15 +11,23 @@ export class MessagesService {
     private userService: UserService,
   ) {}
 
-  async getAllMessagesByUserId(userId: string, isMentor = false) {
+  async getAllMessagesByUserId(userId: string) {
+    const current = await this.userService.getById(userId);
+    if (!current) throw new NotFoundException('Пользователь не обнаружен');
+    const isMentor = !!current.mentorRole;
+
     const messages = await this.prismaService.message.findMany({
       where: isMentor ? { mentorId: +userId } : { studentId: +userId },
       orderBy: { createdAt: 'desc' },
+      include: {
+        student: true,
+        mentor: isMentor,
+      },
     });
     return messages;
   }
 
-  async createMessage(userId: string, dto: CreateMessageDto) {
+  async createMessage(userId: string, dto: CreateMessageDto, files: any) {
     const current = await this.userService.getById(userId);
     if (!current) throw new NotFoundException('Пользователь не найден');
 
@@ -34,17 +42,25 @@ export class MessagesService {
         question: dto.question,
         response: '',
         responseFiles: [],
-        questionFiles: dto.questionFiles ?? [],
+        questionFiles: files ? files.map((el: any) => el.filename) : [],
       },
     });
 
     return comment;
   }
 
-  async createResponseForMessage(messageId: string, dto: CreateResponseDto) {
+  async createResponseForMessage(dto: CreateResponseDto, files: any) {
+    const { messageId, ...rest } = dto;
+
+    console.log('хачи пидорасы', dto, messageId);
+
     await this.prismaService.message.update({
       where: { id: +messageId },
-      data: { ...dto, status: 'Ответ готов' },
+      data: {
+        ...rest,
+        responseFiles: files ? files.map((el: any) => el.filename) : [],
+        status: 'Ответ готов',
+      },
     });
   }
 

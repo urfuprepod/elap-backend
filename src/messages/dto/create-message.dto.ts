@@ -7,6 +7,5 @@ export class CreateMessageDto {
   @IsString()
   theme: string;
 
-  @IsArray()
-  questionFiles?: string[];
+ 
 }
