@@ -21,18 +21,17 @@ export class UsersService {
 
   async findAllStudents() {
     const role = await this.prismaService.role.findFirst({
-      where: {title: 'USER'}
-    })
-    if (!role) throw new NotFoundException('Bad')
+      where: { title: 'USER' },
+    });
+    if (!role) throw new NotFoundException('Bad');
     const users = await this.prismaService.user.findMany({
       where: { role: { id: role.id } },
       include: {
-        mentor: true
-      }
+        mentor: true,
+      },
     });
     return users;
   }
-
 
   async getById(id: string) {
     const user = await this.prismaService.user.findUnique({
@@ -64,9 +63,15 @@ export class UsersService {
     if (!role) {
       const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
       if (!!mentorRole) {
-        const mentor = await this.prismaService.user.findFirst({
-          where: { role: { id: mentorRole.id } },
+        let mentor = await this.prismaService.user.findFirst({
+          where: { isSuperAdmin: true },
         });
+        if (!mentor) {
+          mentor = await this.prismaService.user.findFirst({
+            where: { role: { id: mentorRole.id } },
+          });
+        }
+
         if (!mentor) return;
         this.prismaService.user.update({
           where: { id: user.id },
