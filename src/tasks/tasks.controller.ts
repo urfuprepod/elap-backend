@@ -10,6 +10,8 @@ import {
   UploadedFiles,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
@@ -19,6 +21,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { CreateResponseTaskDto } from './dto/create-response-task.dto';
+import { ReworkStatusDto } from './dto/rework-status.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -85,6 +88,7 @@ export class TasksController {
 
   @HttpCode(200)
   @Post(':id/response')
+  @UsePipes(new ValidationPipe())
   @UseInterceptors(
     FilesInterceptor('responseFiles', 4, {
       storage: diskStorage({
@@ -104,5 +108,52 @@ export class TasksController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     return this.tasksService.addResponseTask(id, dto, files);
+  }
+
+  @HttpCode(200)
+  @Post(':id/rework')
+  @UsePipes(new ValidationPipe())
+  @UseInterceptors(
+    FilesInterceptor('commentFiles', 4, {
+      storage: diskStorage({
+        destination: './static/tasks',
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+        },
+      }),
+    }),
+  )
+  setRework(
+    @Param('id') id: string,
+    @Body() dto: ReworkStatusDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    return this.tasksService.setTaskStatusRework(id, dto, files);
+  }
+
+  @HttpCode(200)
+  @Post(':id/complete')
+  @UseInterceptors(
+    FilesInterceptor('commentFiles', 4, {
+      storage: diskStorage({
+        destination: './static/tasks',
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+        },
+      }),
+    }),
+  )
+  setComplete(
+    @Param('id') id: string,
+    @Body() dto: ReworkStatusDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    return this.tasksService.setTaskStatusComplete(id, dto, files);
   }
 }

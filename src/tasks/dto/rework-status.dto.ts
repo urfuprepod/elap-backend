@@ -10,6 +10,6 @@ import {
 export class ReworkStatusDto {
  
   @IsString()
-  @IsNotEmpty()
-  commentText: string;
+  @IsOptional()
+  commentText?: string;
 }

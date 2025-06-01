@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from 'src/users/users.module';
+import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UsersModule } from 'src/users/users.module';
       secret: 'UrfuElap38',
       signOptions: { expiresIn: '23h' },
     }),
+    RolesModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

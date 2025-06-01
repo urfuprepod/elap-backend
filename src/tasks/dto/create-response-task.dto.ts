@@ -2,10 +2,10 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateResponseTaskDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   responseText: string;
 
   @IsString()
-  @IsNotEmpty()
-  commentText: string;
+  @IsOptional()
+  commentText?: string;
 }

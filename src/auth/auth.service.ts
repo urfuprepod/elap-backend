@@ -10,12 +10,14 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { LoginDto } from './dto/login.dto';
+import { RolesService } from 'src/roles/roles.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userServiсe: UserService,
     private jwt: JwtService,
+    private rolesService: RolesService,
   ) {}
 
   EXPIRE_DAY_REFRESH_TOKEN = 3; // время жизни токена в днях
@@ -36,13 +38,15 @@ export class AuthService {
   async login(dto: LoginDto, res: Response) {
     const { password, ...user } = await this.validateUser(dto);
     const tokens = await this.issueTokens(user.id, res);
+    const role = await this.rolesService.getRoleById(user.roleId);
     return {
-      user,
+      user: { ...user, authorities: [{authority: role.title}] },
+
       ...tokens,
     };
   }
 
-  async logout( res: Response) {
+  async logout(res: Response) {
     res.cookie('urfuToken', '', {
       httpOnly: true,
       domain: 'localhost',

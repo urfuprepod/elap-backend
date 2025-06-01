@@ -32,7 +32,7 @@ export class TasksService {
         : undefined,
       include: {
         user: true,
-        mentor: { select: { login: true } },
+        mentor: { select: { login: true, email: true } },
         comments: true,
       },
     });
@@ -72,10 +72,13 @@ export class TasksService {
       where: { id: +id },
     });
     if (!task) throw new NotFoundException('Неправильно');
-    const comment = await this.commentService.createCommment(
-      { taskId: task.id, message: dto.commentText },
-      'user',
-    );
+    if (dto.commentText) {
+      const comment = await this.commentService.createCommment(
+        { taskId: task.id, message: dto.commentText },
+        'user',
+      );
+    }
+
     const fileNames = (files ?? []).map((el: any) => el.filename);
     const edited = await this.prismaService.task.update({
       where: { id: task.id },
@@ -114,7 +117,7 @@ export class TasksService {
     if (!current) throw new NotFoundException('Bad Request');
     const filenames = (files ?? []).map((el: any) => el.filename);
     const comment = await this.commentService.createCommment(
-      { taskId: current.id, files: filenames, message: dto.commentText },
+      { taskId: current.id, files: filenames, message: dto.commentText ?? '' },
       'mentor',
     );
     await this.prismaService.task.update({
@@ -136,13 +139,13 @@ export class TasksService {
     if (!current) throw new NotFoundException('Bad Request');
     const filenames = (files ?? []).map((el: any) => el.filename);
     const comment = await this.commentService.createCommment(
-      { taskId: current.id, message: dto.commentText, files: filenames },
+      { taskId: current.id, message: dto.commentText ?? '', files: filenames },
       'mentor',
     );
     await this.prismaService.task.update({
       where: { id: current.id },
       data: {
-        status: 'rework',
+        status: 'complete',
       },
     });
   }
