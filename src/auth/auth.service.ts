@@ -91,7 +91,7 @@ export class AuthService {
       domain: 'localhost',
       secure: true,
       expires: date,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
 
     return { accessToken };
@@ -106,7 +106,7 @@ export class AuthService {
       domain: 'localhost',
       secure: true, // true в продакшне
       expires: expiresIn,
-      sameSite: 'none', // в продакшне лучше ставить lax
+      sameSite: 'lax', // в продакшне лучше ставить lax
     });
   }
 
@@ -116,7 +116,7 @@ export class AuthService {
       domain: 'localhost',
       secure: true,
       expires: new Date(0),
-      sameSite: 'none',
+      sameSite: 'lax',
     });
   }
 }
