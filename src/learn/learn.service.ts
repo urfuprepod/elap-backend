@@ -80,6 +80,9 @@ export class LearnService {
           sectionId: +sectionId,
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
 
     return contents;
