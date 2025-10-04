@@ -56,7 +56,7 @@ export class TasksService {
         text: dto.text,
         status: 'created',
         mentorId: userId,
-        files: files.map((el: any) => el.filename),
+        files: files.map((el: any) => el.originalname),
       },
     });
 

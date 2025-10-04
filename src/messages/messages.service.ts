@@ -42,7 +42,7 @@ export class MessagesService {
         question: dto.question,
         response: '',
         responseFiles: [],
-        questionFiles: files ? files.map((el: any) => el.filename) : [],
+        questionFiles: files ? files.map((el: any) => el.originalname) : [],
       },
     });
 
