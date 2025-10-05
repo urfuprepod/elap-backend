@@ -5,7 +5,9 @@
 /docker-data
 docker-data
 /static
+.env
 
+./.env
 # Logs
 logs
 *.log
