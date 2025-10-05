@@ -44,14 +44,15 @@ export class UsersService {
   }
 
   async create(dto: AuthDto, role?: string) {
-    const password = await hash(dto.password ?? '');
+    const password = await hash(dto.password);
     const roleModel = await this.rolesService.getRoleByTitle(role || 'USER');
+    const login = dto?.login || dto.email.split('@')[0];
+    console.log(login, 'jioa');
     const user = await this.prismaService.user.create({
       data: {
         email: dto.email,
         password,
-        login: dto.login,
-        mentorRole: dto.mentorRole,
+        login: dto.email.split('@')[0],
         role: {
           connect: {
             id: roleModel.id,
@@ -60,18 +61,14 @@ export class UsersService {
       },
     });
 
+    console.log(role, 'оауоауоау');
     if (!role) {
       const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
+      console.log(mentorRole, 'cherensha');
       if (!!mentorRole) {
-        let mentor = await this.prismaService.user.findFirst({
-          where: { isSuperAdmin: true },
+        const mentor = await this.prismaService.user.findFirst({
+          where: { role: { id: mentorRole.id } },
         });
-        if (!mentor) {
-          mentor = await this.prismaService.user.findFirst({
-            where: { role: { id: mentorRole.id } },
-          });
-        }
-
         if (!mentor) return;
         this.prismaService.user.update({
           where: { id: user.id },

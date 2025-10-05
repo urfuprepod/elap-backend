@@ -21,7 +21,8 @@ export class AuthDto {
 
   @IsNotEmpty({ message: 'Логин не может быть пустой строкой' })
   @IsString()
-  login: string;
+  @IsOptional()
+  login?: string;
 
   @IsOptional()
   @IsString()

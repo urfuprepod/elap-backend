@@ -11,11 +11,14 @@ import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { RolesService } from 'src/roles/roles.service';
+import { User } from '@prisma/client';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userServiсe: UserService,
+    private usersService: UsersService,
     private jwt: JwtService,
     private rolesService: RolesService,
   ) {}
@@ -26,7 +29,7 @@ export class AuthService {
   async register(dto: AuthDto, res: Response) {
     const oldUser = await this.userServiсe.getByEmail(dto.email);
     if (oldUser) throw new BadRequestException('Email already in use');
-    const { password, ...user } = await this.userServiсe.create(dto);
+    const { password, ...user } = await this.usersService.create(dto);
 
     const tokens = await this.issueTokens(user.id, res);
     return {
@@ -40,9 +43,18 @@ export class AuthService {
     const tokens = await this.issueTokens(user.id, res);
     const role = await this.rolesService.getRoleById(user.roleId);
     return {
-      user: { ...user, authorities: [{authority: role.title}] },
+      user: { ...user, authorities: [{ authority: role.title }] },
 
       ...tokens,
+    };
+  }
+
+  async getAuthInfo(userId: number): Promise<{ user: User }> {
+    if (!userId) throw new BadRequestException();
+    const user = await this.userServiсe.getById(String(userId));
+    if (!user) throw new BadRequestException();
+    return {
+      user,
     };
   }
 
@@ -69,11 +81,6 @@ export class AuthService {
   async getNewTokens(token: string) {
     const result = await this.jwt.verifyAsync<{ id: string }>(token);
     if (!result) throw new UnauthorizedException('Invalid token');
-
-    // const { password, ...user } = await this.userServiсe.getById(result.id);
-    // const tokens = this.issueTokens(user.id);
-
-    // return { user, ...tokens };
   }
 
   private async issueTokens(userId: number, res: Response) {

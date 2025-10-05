@@ -5,6 +5,7 @@ import {
   HttpCode,
   Post,
   Res,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -12,6 +13,8 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { LoginDto } from './dto/login.dto';
 import { Response } from 'express';
+import { JwtAuthGuard } from './guards/jwt.guard';
+import { CurrentUser } from './decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +36,13 @@ export class AuthController {
   @HttpCode(200)
   @Get('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-    return this.authService.logout(res)
+    return this.authService.logout(res);
+  }
+
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getTasks(@CurrentUser('id') userId: number) {
+    return this.authService.getAuthInfo(userId);
   }
 }

@@ -19,6 +19,9 @@ export class UserService {
       where: {
         id: +id,
       },
+      include: {
+        mentor: true,
+      },
     });
     return user;
   }
@@ -35,12 +38,13 @@ export class UserService {
   async create(dto: AuthDto, role?: string) {
     const password = await hash(dto.password);
     const roleModel = await this.rolesService.getRoleByTitle(role || 'USER');
+    const login = dto?.login || dto.email.split('@')[0];
+    console.log(login, 'jioa')
     const user = await this.prisma.user.create({
       data: {
         email: dto.email,
         password,
-        login: dto.login,
-
+        login: 'dolboeb',
         role: {
           connect: {
             id: roleModel.id,
@@ -49,10 +53,10 @@ export class UserService {
       },
     });
 
-    console.log(role, 'оауоауоау')
+    console.log(role, 'оауоауоау');
     if (!role) {
       const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
-      console.log(mentorRole, 'cherensha')
+      console.log(mentorRole, 'cherensha');
       if (!!mentorRole) {
         const mentor = await this.prisma.user.findFirst({
           where: { role: { id: mentorRole.id } },

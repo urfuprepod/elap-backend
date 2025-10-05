@@ -18,7 +18,7 @@ import { RolesModule } from 'src/roles/roles.module';
     PassportModule.register({ defaultStrategy: 'jwt' }), // Важно!
     JwtModule.register({
       secret: 'UrfuElap38',
-      signOptions: { expiresIn: '23h' },
+      signOptions: { expiresIn: '3d' },
     }),
     RolesModule,
   ],

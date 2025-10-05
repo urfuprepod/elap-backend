@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: false });
 
   app.enableCors({
-    origin: '*', // Укажите ваш фронтенд-адрес
+    origin: 'http://localhost:3000', // Укажите ваш фронтенд-адрес
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['Authorization'], // Для доступа браузера к заголовку
@@ -18,7 +18,7 @@ async function bootstrap() {
 
 
   app.use(function (request: Request, response: Response, next: NextFunction) {
-    // response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     response.setHeader(
       'Access-Control-Allow-Methods',
       'GET, POST, PUT, DELETE, OPTIONS',
