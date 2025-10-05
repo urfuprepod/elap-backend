@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Length, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, Length, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
   @IsString()
@@ -7,5 +7,6 @@ export class ChangePasswordDto {
 
   @IsString()
   @MinLength(6, { message: 'Пароль не должен быть меньше 6 символов' })
-  newPassword: string;
+  @IsOptional()
+  newPassword?: string;
 }

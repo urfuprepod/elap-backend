@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  {{!-- <link rel="preconnect" href="https://fonts.googleapis.com"> --}}
+  {{!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> --}}
+  {{!-- <link href="https://fonts.googleapis.com/css2family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> --}}
+</head>
+
+<style type="text/css">
+  html {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .message-block {
+    padding: 40px;
+    background-color: #d5f7d4;
+    max-width: 1000px;
+    margin-inline: auto;
+    border-radius: 8px;
+    margin-bottom: 5px;
+  }
+
+  a {
+    padding: 2px 5px;
+    text-decoration: none;
+    background-color: #d8b2ed;
+    color: #000;
+    border-radius: 4px;
+  }
+
+  .login,
+  .pass {
+    padding: 2px 5px;
+    background-color: #d8b2ed;
+    color: #000;
+    border-radius: 4px;
+  }
+
+  .signature {
+    font-style: italic;
+    text-align: right;
+  }
+
+  .footer-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: #f9f9f9;
+    max-width: 1000px;
+    margin-inline: auto;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+  }
+</style>
+
+<body>
+<div class="message-block">
+  <h3>Уважаемый пользователь,</h3>
+  <p>Ваш пароль в системе ЭЛАП был изменен</p>
+  <br />
+  <p>Ваш актуальный почтовый адрес: <span class="login">{{email}}</span></p>
+  <p>Ваш актуальный пароль: <span class="login">{{password}}</span></p>
+  <p class="signature">С уважением,</p>
+  <p class="signature">команда проекта «ЭЛАП»</p>
+</div>
+
+<div class="footer-block">
+  <img src="https://elap-urgi.urfu.ru/static/media/logo.e9d771ef6faa369ff8f27e240428019c.svg" height=70 width=120 />
+  <span>© 2024-2025</span>
+  <img src=https://elap-urgi.urfu.ru/static/media/logo_urfu.023b41368f6c570f7a84b2501b147316.svg height=70 width=120 />
+</div>
+</body>
+</html>

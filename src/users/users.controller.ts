@@ -74,4 +74,10 @@ export class UsersController {
   changePass(@Body() newPasswordDto: ChangePasswordDto) {
     return this.usersService.editPassword(newPasswordDto);
   }
+
+  @HttpCode(200)
+  @Post('resetPassRequest')
+  resetPassword(@Body() newPasswordDto: ChangePasswordDto) {
+    return this.usersService.editPassword(newPasswordDto);
+  }
 }

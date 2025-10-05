@@ -1,6 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { AuthDto } from 'src/auth/dto/auth.dto';
+import { ChangePasswordDto } from 'src/user/dto/change-password.dto';
 
 @Injectable()
 export class EmailsService {
@@ -17,5 +18,17 @@ export class EmailsService {
         email: dto.email,
       },
     });
+  }
+
+  async sendPassword(dto: ChangePasswordDto) {
+    await this.mailerService.sendMail({
+      to: dto.email,
+      subject: 'Смена пароля в системе «ЭЛАП»',
+      template: 'change-pass',
+      context: {
+        password: dto.newPassword,
+        email: dto.email
+      }
+    })
   }
 }
