@@ -86,6 +86,7 @@ export class UsersService {
   }
 
   async editPassword(newPasswordDto: ChangePasswordDto) {
+    console.log(newPasswordDto, 'dto')
     const password = await hash(newPasswordDto?.newPassword ?? '123456789');
     const user = await this.prismaService.user.update({
       where: {

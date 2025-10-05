@@ -3,7 +3,7 @@
 /node_modules
 /build
 /docker-data
-docker-data
+./docker-data
 /static
 .env
 

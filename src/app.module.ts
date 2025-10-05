@@ -23,32 +23,6 @@ import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot(),
-    // MailerModule.forRoot({
-    //   transport: {
-    //     host: 'mail.urfu.ru', // Хост SMTP сервера
-    //     port: 25, // Порт SMTP сервера
-    //     secure: false, // Используем SSL/TLS
-    //     requireTLS: true,
-    //     tls: {
-    //       rejectUnauthorized: false, // Игнорируем ошибку самоподписанного сертификата
-    //     },
-    //     auth: {
-    //       user: 'elap-urgi@urfu.ru', // Ваш email
-    //       pass: 'POI098poi', // Пароль от почты или App Password
-    //     },
-    //   },
-    //   defaults: {
-    //     from: 'elap-urgi@urfu.ru', // Отправитель по умолчанию
-    //   },
-    //   template: {
-    //     dir: join(process.cwd(), 'src/templates'), // Путь к папке с шаблонами
-    //     adapter: new HandlebarsAdapter(), // Используем Handlebars для шаблонов
-    //     options: {
-    //       strict: true,
-    //     },
-    //   },
-    // }),
     AuthModule,
     EmailsModule,
     UserModule,
