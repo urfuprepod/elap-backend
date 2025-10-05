@@ -8,6 +8,7 @@ export class EmailsService {
   constructor(private readonly mailerService: MailerService) {}
 
   async sendWelcomeEmail(dto: AuthDto) {
+    console.log(dto.email, dto.password, 'cheremsha')
     await this.mailerService.sendMail({
       to: dto.email, // Получатель
       subject: 'Регистрация на сайте проекта «ЭЛАП»', // Тема письма,
