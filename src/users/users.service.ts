@@ -78,6 +78,10 @@ export class UsersService {
       }
     }
 
+    console.log({
+      ...dto,
+      password: dto.password ?? '1234567890',
+    })
     await this.emailsService.sendWelcomeEmail({
       ...dto,
       password: dto.password ?? '1234567890',
