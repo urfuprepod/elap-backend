@@ -5,12 +5,14 @@ import { AuthDto } from 'src/auth/dto/auth.dto';
 import { RolesService } from 'src/roles/roles.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { EmailsService } from 'src/emails/emails.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private rolesService: RolesService,
     private prismaService: PrismaService,
+    private emailsService: EmailsService,
   ) {}
 
   async findAllMentors() {
@@ -64,12 +66,10 @@ export class UsersService {
 
     if (!role) {
       const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
-      console.log(mentorRole, 'cherensha');
       if (!!mentorRole) {
         const mentor = await this.prismaService.user.findFirst({
           where: { role: { id: mentorRole.id } },
         });
-        console.log('а где ментор', mentor)
         if (!mentor) return;
         await this.prismaService.user.update({
           where: { id: user.id },
@@ -78,16 +78,21 @@ export class UsersService {
       }
     }
 
+    await this.emailsService.sendWelcomeEmail({
+      ...dto,
+      password: dto.password ?? '1234567890',
+    });
     return user;
   }
 
   async editPassword(newPasswordDto: ChangePasswordDto) {
+    const password = await hash(newPasswordDto.newPassword);
     const user = await this.prismaService.user.update({
       where: {
         email: newPasswordDto.email,
       },
       data: {
-        password: newPasswordDto.newPassword,
+        password,
       },
     });
     const { password: pass, ...rest } = user;
