@@ -49,20 +49,22 @@ export class TasksService {
   }
 
   async createTask(dto: CreateTaskDto, userId: number, files: any[]) {
-    const task = await this.prismaService.task.create({
-      data: {
-        type: 'Default',
-        userId: +dto.studentId,
-        text: dto.text,
-        status: 'created',
-        mentorId: userId,
-        files: files.map((el: any) => el.originalname),
-      },
+    const ids = dto.studentId.split(',');
+    return await this.prismaService.$transaction(async (tx) => {
+      const tasks = await tx.task.createMany({
+        data: ids.map((studentId: string) => ({
+          type: 'Default',
+          userId: +studentId,
+          text: dto.text,
+          status: 'created',
+          mentorId: userId,
+          files: files.map((el: any) => el.filename),
+        })),
+      });
+
+      return tasks;
     });
-
-    return task;
   }
-
   async deleteTask(id: string) {
     await this.prismaService.task.delete({ where: { id: +id } });
   }

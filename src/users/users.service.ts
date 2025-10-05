@@ -45,15 +45,15 @@ export class UsersService {
   }
 
   async create(dto: AuthDto, role?: string) {
-    const password = await hash(dto.password);
+    const password = await hash(dto?.password ?? '1234567890');
     const roleModel = await this.rolesService.getRoleByTitle(role || 'USER');
     const login = dto?.login || dto.email.split('@')[0];
-    console.log(login, 'jioa');
     const user = await this.prismaService.user.create({
       data: {
         email: dto.email,
         password,
-        login: dto.email.split('@')[0],
+        login,
+        mentorRole: dto?.mentorRole ?? null,
         role: {
           connect: {
             id: roleModel.id,
@@ -69,8 +69,9 @@ export class UsersService {
         const mentor = await this.prismaService.user.findFirst({
           where: { role: { id: mentorRole.id } },
         });
+        console.log('а где ментор', mentor)
         if (!mentor) return;
-        this.prismaService.user.update({
+        await this.prismaService.user.update({
           where: { id: user.id },
           data: { mentorId: mentor.id },
         });

@@ -39,12 +39,31 @@ export class TasksController {
   @UseInterceptors(
     FilesInterceptor('taskFiles', 1, {
       storage: diskStorage({
-        destination: './static/tasks',
+        destination: (req, file, cb) => {
+          const now = new Date();
+          const datePath = `${now.getFullYear()}-${(now.getMonth() + 1)
+            .toString()
+            .padStart(
+              2,
+              '0',
+            )}-${now.getDate().toString().padStart(2, '0')}/${now
+            .getHours()
+            .toString()
+            .padStart(2, '0')}`;
+          const fullPath = `./static/tasks/${datePath}`;
+
+          const fs = require('fs');
+          if (!fs.existsSync(fullPath)) {
+            fs.mkdirSync(fullPath, { recursive: true });
+          }
+
+          cb(null, fullPath);
+        },
         filename: (req, file, cb) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+          const originalName = decodeURIComponent(escape(file.originalname));
+          cb(null, originalName);
         },
       }),
     }),

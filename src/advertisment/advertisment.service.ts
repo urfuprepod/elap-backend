@@ -26,7 +26,7 @@ export class AdvertismentService {
       data: {
         title: dto.title,
         text: dto.text,
-        files: files.map((el: any) => el.originalname),
+        files: files.map((el: any) => el.filename),
       },
     });
   }
