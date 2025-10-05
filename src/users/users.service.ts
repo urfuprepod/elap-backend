@@ -4,6 +4,7 @@ import { hash } from 'argon2';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 import { RolesService } from 'src/roles/roles.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -61,7 +62,6 @@ export class UsersService {
       },
     });
 
-    console.log(role, 'оауоауоау');
     if (!role) {
       const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
       console.log(mentorRole, 'cherensha');
@@ -78,6 +78,19 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async editPassword(newPasswordDto: ChangePasswordDto) {
+    const user = await this.prismaService.user.update({
+      where: {
+        email: newPasswordDto.email,
+      },
+      data: {
+        password: newPasswordDto.newPassword,
+      },
+    });
+    const { password: pass, ...rest } = user;
+    return rest;
   }
 
   async editUser(id: string, userData: UpdateUserDto) {

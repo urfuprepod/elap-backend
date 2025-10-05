@@ -49,12 +49,13 @@ export class AuthService {
     };
   }
 
-  async getAuthInfo(userId: number): Promise<{ user: User }> {
+  async getAuthInfo(userId: number) {
     if (!userId) throw new BadRequestException();
     const user = await this.userServiсe.getById(String(userId));
     if (!user) throw new BadRequestException();
+    const role = await this.rolesService.getRoleById(user.roleId);
     return {
-      user,
+      user: { ...user, authorities: [{ authority: role.title }] },
     };
   }
 

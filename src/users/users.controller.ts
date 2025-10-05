@@ -11,6 +11,7 @@ import {
 import { UsersService } from './users.service';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -65,6 +66,12 @@ export class UsersController {
   @HttpCode(200)
   @Get(':id')
   getStudentById(@Param('id') userId: string) {
-    return this.usersService.getById(userId)
+    return this.usersService.getById(userId);
+  }
+
+  @HttpCode(200)
+  @Post('changePass')
+  changePass(@Body() newPasswordDto: ChangePasswordDto) {
+    return this.usersService.editPassword(newPasswordDto);
   }
 }

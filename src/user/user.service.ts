@@ -129,18 +129,18 @@ export class UserService {
     return users;
   }
 
-  async editPassword(userId: number, password: string) {
-    const user = await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        password,
-      },
-    });
-    const { password: pass, ...rest } = user;
-    return rest;
-  }
+async editPassword(userId: number, password: string) {
+  const user = await this.prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      password,
+    },
+  });
+  const { password: pass, ...rest } = user;
+  return rest;
+}
 
   async changeActivation(userId: string, isActive: boolean) {
     const user = await this.getById(userId);
