@@ -62,7 +62,7 @@ export class AuthService {
   async logout(res: Response) {
     res.cookie('urfuToken', '', {
       httpOnly: true,
-      domain: 'localhost',
+      domain: '.urfu.ru',
       secure: true,
       expires: new Date(0),
       sameSite: 'none',
@@ -96,7 +96,7 @@ export class AuthService {
     date.setDate(date.getDate() + 3);
     res.cookie('urfuToken', accessToken, {
       httpOnly: true,
-      domain: 'localhost',
+      domain: '.urfu.ru',
       secure: true,
       expires: date,
       sameSite: 'lax',
@@ -111,7 +111,7 @@ export class AuthService {
 
     res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
       httpOnly: true, // серверная куки
-      domain: 'localhost',
+      domain: '.urfu.ru',
       secure: true, // true в продакшне
       expires: expiresIn,
       sameSite: 'lax', // в продакшне лучше ставить lax
@@ -121,7 +121,7 @@ export class AuthService {
   removeRefreshTokenFromResponse(res: Response) {
     res.cookie(this.REFRESH_TOKEN_NAME, '', {
       httpOnly: true,
-      domain: 'localhost',
+      domain: '.urfu.ru',
       secure: true,
       expires: new Date(0),
       sameSite: 'lax',

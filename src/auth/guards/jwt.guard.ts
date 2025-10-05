@@ -26,7 +26,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   private clearAuthCookie(response: Response) {
     response.cookie('urfuToken', '', {
       httpOnly: true,
-      domain: 'localhost',
+      domain: '.urfu.ru',
       secure: true,
       expires: new Date(0),
       sameSite: 'none',
