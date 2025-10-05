@@ -50,6 +50,7 @@ export class UsersService {
     const password = await hash(dto?.password ?? '1234567890');
     const roleModel = await this.rolesService.getRoleByTitle(role || 'USER');
     const login = dto?.login || dto.email.split('@')[0];
+    console.log('iefeufhwfefhuwfhu')
     const user = await this.prismaService.user.create({
       data: {
         email: dto.email,
@@ -64,6 +65,7 @@ export class UsersService {
       },
     });
 
+    console.log('govno')
     if (!role) {
       const mentorRole = await this.rolesService.getRoleByTitle('MENTOR');
       if (!!mentorRole) {

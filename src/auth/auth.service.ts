@@ -29,8 +29,10 @@ export class AuthService {
   async register(dto: AuthDto, res: Response) {
     const oldUser = await this.userServiсe.getByEmail(dto.email);
     if (oldUser) throw new BadRequestException('Email already in use');
+    console.log('ебаное сук аписьмо')
     const { password, ...user } = await this.usersService.create(dto);
 
+    
     const tokens = await this.issueTokens(user.id, res);
     return {
       user,
